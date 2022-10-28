@@ -21,7 +21,8 @@ POST http://localhost:8080/hello
 ###
 
 < {%
-
+    client.global.set("Var1", "test");
+request.variables.set("Var2", client.global.get("Var1"));
 
     // const timestamp = Math.floor(new Date().getTime() / 1000);
     const timestamp = Math.floor(new Date().getTime() / 1000);
@@ -34,10 +35,16 @@ POST http://localhost:8080/hello
 GET http://localhost:8080/hello/{{timestamp}}/{{signature}}/{{envVal}}/{{test}}
 
 > {%
+let someVar = request.variables.get("Var2");
 client.log(request.environment.get("envValChanged"));
+client.log(request.variables.get("Var2"));
+client.log(someVar);
+
     client.test("Request executed successfully", function() {
         client.assert(response.status === 200, "Response status is not 200");
     });
+
+
 %}
 
 <> 2022-10-28T141010.200.txt
@@ -80,8 +87,10 @@ client.log(request.environment.get("envValChanged"));
 GET http://localhost:8080/hello
 
 > {%
-    client.global.clearAll()
+    // client.global.clearAll()
+    client.global.set("test123", "test1235555");
     client.global.set("envValChanged", "changed");
+    client.log(request.environment.get("test123"));
 
     client.test("Request executed successfully", function() {
         client.assert(response.status === 200, "Response status is not 200");
