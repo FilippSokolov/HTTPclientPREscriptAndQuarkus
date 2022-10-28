@@ -27,14 +27,14 @@ POST http://localhost:8080/hello
     const timestamp = Math.floor(new Date().getTime() / 1000);
     request.variables.set("timestamp", timestamp)
     request.variables.set("signature", crypto.hmac.sha256().withTextSecret("API_KEY").updateWithText("timestamp=" + timestamp).digest().toHex());
-
+ request.variables.set("test", request.environment.get("envValChanged"));
 %}
 
 
-GET http://localhost:8080/hello/{{timestamp}}/{{signature}}/{{envVal}}/{{envValChanged}}
+GET http://localhost:8080/hello/{{timestamp}}/{{signature}}/{{envVal}}/{{test}}
 
 > {%
-
+client.log(request.environment.get("envValChanged"));
     client.test("Request executed successfully", function() {
         client.assert(response.status === 200, "Response status is not 200");
     });
