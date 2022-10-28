@@ -1,0 +1,95 @@
+###
+
+< {%
+    const timestamp = Math.floor(new Date().getTime() / 1000);
+    request.variables.set("timestamp", timestamp)
+    request.variables.set("signature", crypto.hmac.sha256().withTextSecret("API_KEY").updateWithText("timestamp=" + timestamp).digest().toHex());
+%}
+
+GET http://localhost:8080/hello
+
+###
+POST http://localhost:8080/hello
+
+
+{
+  "message": "test"
+}
+
+<> 2022-10-28T132439.200.txt
+
+###
+
+< {%
+
+
+    // const timestamp = Math.floor(new Date().getTime() / 1000);
+    const timestamp = Math.floor(new Date().getTime() / 1000);
+    request.variables.set("timestamp", timestamp)
+    request.variables.set("signature", crypto.hmac.sha256().withTextSecret("API_KEY").updateWithText("timestamp=" + timestamp).digest().toHex());
+
+%}
+
+
+GET http://localhost:8080/hello/{{timestamp}}/{{signature}}/{{envVal}}/{{envValChanged}}
+
+> {%
+
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> 2022-10-28T141010.200.txt
+<> 2022-10-28T141000.200.txt
+<> 2022-10-28T140837.200.txt
+<> 2022-10-28T140522.200.txt
+<> 2022-10-28T140309.200.txt
+<> 2022-10-28T140306.200.txt
+<> 2022-10-28T140304.200.txt
+<> 2022-10-28T140252.200.txt
+<> 2022-10-28T140248.200.txt
+<> 2022-10-28T140244.200.txt
+<> 2022-10-28T140240.200.txt
+<> 2022-10-28T140233.200.txt
+<> 2022-10-28T140212.200.txt
+<> 2022-10-28T140116.200.txt
+<> 2022-10-28T140113.200.txt
+<> 2022-10-28T140111.200.txt
+<> 2022-10-28T140048.200.txt
+<> 2022-10-28T140044.200.txt
+<> 2022-10-28T135711.200.txt
+<> 2022-10-28T135659.200.txt
+<> 2022-10-28T135655.200.txt
+<> 2022-10-28T135653.200.txt
+<> 2022-10-28T135651.200.txt
+<> 2022-10-28T135645.200.txt
+<> 2022-10-28T135554.200.txt
+<> 2022-10-28T135505.200.txt
+<> 2022-10-28T135459.200.txt
+<> 2022-10-28T135456.200.txt
+<> 2022-10-28T135434.200.txt
+<> 2022-10-28T135241.200.txt
+<> 2022-10-28T135234.200.txt
+<> 2022-10-28T134844.200.txt
+<> 2022-10-28T134822.200.txt
+<> 2022-10-28T134524.200.txt
+<> 2022-10-28T133925.500.html
+
+###
+GET http://localhost:8080/hello
+
+> {%
+    client.global.clearAll()
+    client.global.set("envValChanged", "changed");
+
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> 2022-10-28T141014.200.txt
+<> 2022-10-28T141007.200.txt
+<> 2022-10-28T140958.200.txt
+<> 2022-10-28T140519.200.txt
+
